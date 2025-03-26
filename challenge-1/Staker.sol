@@ -2,6 +2,7 @@
 pragma solidity 0.8.20;
 
 // @dev Built by Domum Digital. Est. 2021.
+// Originally deployed at 0x3457AF83E34E4ff23ED498863eA410f87875b5d5
 
 import "hardhat/console.sol";
 import "./ExampleExternalContract.sol";
@@ -16,7 +17,7 @@ contract Staker {
     uint256 public constant threshold = 1 ether;
 
     // Set deadline to 30 seconds after deployment
-    uint256 public deadline = block.timestamp + 72 hours;
+    uint256 public deadline = block.timestamp + 30 seconds;
 
     // Boolean flags for contract state
     bool public openForWithdraw;
@@ -92,7 +93,7 @@ contract Staker {
         return deadline - block.timestamp;
     }
 
-    // Special function that receives ETH
+    // Special function that receives ETH when someone sends ETH directly to the contract address.
     receive() external payable {
         stake();
     }
