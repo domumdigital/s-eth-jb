@@ -7,7 +7,9 @@ pragma solidity 0.8.20; //Do not change the solidity version as it negatively im
 import "./YourToken.sol";
 
 contract Vendor {
-    // event BuyTokens(address buyer, uint256 amountOfETH, uint256 amountOfTokens);
+    event BuyTokens(address buyer, uint256 amountOfETH, uint256 amountOfTokens);
+
+    uint256 public constant tokensPerEth = 100;
 
     YourToken public yourToken;
 
@@ -16,10 +18,16 @@ contract Vendor {
     }
 
     // ToDo: create a payable buyTokens() function:
-
     function buyTokens() public payable {
-        uint256 ethAmount = msg.value;
-        uint256 public constant tokensPerEth = 100;
+        require(msg.value > 0, "MORE ETH REQUIRED");
+
+        uint256 amountOfTokens = msg.value * tokensPerEth;
+
+        uint256 vendorBalance = yourToken.balanceOf(address(this));
+        require(vendorBalance >= amountOfTokens, "Vendor has insufficient tokens");
+
+        emit BuyTokens(msg.sender, msg.value, amountOfTokens);
+
         yourToken.transfer(msg.sender, tokensPerEth);
     }
 
@@ -27,4 +35,3 @@ contract Vendor {
 
     // ToDo: create a sellTokens(uint256 _amount) function:
 }
-
