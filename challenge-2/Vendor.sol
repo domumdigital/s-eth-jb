@@ -24,7 +24,6 @@ contract Vendor is Ownable {
         uint256 amountOfTokens = msg.value * tokensPerEth;
 
         uint256 vendorBalance = yourToken.balanceOf(address(this));
-
         require(vendorBalance >= amountOfTokens, "Vendor is sold out. Try again later.");
 
         emit BuyTokens(msg.sender, msg.value, amountOfTokens);
